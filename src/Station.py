@@ -5,7 +5,7 @@ class Station:
     def __init__(self, name):
         self.name = name
 
-    def checkIn(self, customer):
+    def queue(self, customer):
 
         if not self.__served:
             self.__served = customer
