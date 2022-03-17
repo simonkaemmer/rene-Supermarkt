@@ -1,16 +1,13 @@
-# This is a sample Python script.
+from src.KundeT1 import KundeT1
+from src.Station import Station
 
-# Press Umschalt+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+s1 = Station(name="Eingang")
+k1 = KundeT1("Klaus")
+k2 = KundeT1("Hugo")
+
+s1.addToQ(k1)
+s1.addToQ(k2)
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Strg+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+print(s1.name)
+print(s1.q)
