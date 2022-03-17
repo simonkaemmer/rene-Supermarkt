@@ -2,10 +2,11 @@ import heapq
 
 
 class Station:
-    q = []
+    __queue = []
+    __served = None
 
     def __init__(self, name):
         self.name = name
 
     def addToQ(self, customer):
-        self.q.append(customer)
+        self.__queue.append(customer)
