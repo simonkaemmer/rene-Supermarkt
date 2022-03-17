@@ -1,13 +1,22 @@
-from src.KundeT1 import KundeT1
+from src.EventList import EventList
+from src.KundIn import KundIn
 from src.Station import Station
 
-s1 = Station(name="Eingang")
-k1 = KundeT1("Klaus")
-k2 = KundeT1("Hugo")
+#eventList = EventList()
 
-s1.addToQ(k1)
-s1.addToQ(k2)
+eingang = Station("Eingang")
+wurst = Station("Wurst")
+käse = Station("Käse")
+kasse = Station("Kasse")
+bäcker = Station("Bäcker")
+ausgang = Station("Ausgang")
 
 
-print(s1.name)
-print(s1.q)
+k1 = KundIn("Klaus")
+k2 = KundIn("Dieter")
+k3 = KundIn("Petra")
+
+eingang.checkIn(k1)
+eingang.checkIn(k2)
+eingang.checkIn(k3)
+eingang.showStatus()

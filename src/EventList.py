@@ -7,12 +7,16 @@ class EventList:
     __simTime = None
     __eventNr = 0
 
+    def __init__(self, simTime, eventNr):
+        self.__simTime = simTime
+        self.__eventNr = eventNr
+
     def pop(self):
         return heapq.heappop(self.__heapQ)
 
     def push(self, event):
         heapq.heappush(self.__heapQ, event)
 
-    def start(self):
-        for event in self.__heapQ:
-            # Do something
+#    def start(self):
+#       for event in self.__heapQ:
+
