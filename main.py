@@ -1,16 +1,26 @@
-# This is a sample Python script.
+class Ereignisliste:
+    # ereignisliste: heapq
+    def pop():
 
-# Press Umschalt+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+    def push(event):
 
+    def start():
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Strg+F8 to toggle the breakpoint.
+class KundIn:
+    # Konstruktor Liste mit Tupeln aus Station T,W,N
+    def __init__(self):
 
+    def beginn_einkauf(self):
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+    def ankunft_station(self):
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    def verlassen_station(self):
+
+class Station:
+    # Konstruktor Bediendauer
+    def __init__(self):
+
+    def anstellen(self, kundIn):
+
+    def fertig(self,kundIn):
+
