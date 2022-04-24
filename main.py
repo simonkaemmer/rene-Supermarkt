@@ -1,6 +1,6 @@
 from src.station import Station
 from src.kundIn import KundIn
-from src.eventList import EventList, Event
+from src.eventList import EventList
 
 # Create Stations
 
@@ -22,10 +22,9 @@ type2stations = [(wurst, 30, 5, 2),
 customerType1 = KundIn(type1stations, "A", 1, 200)
 customerType2 = KundIn(type2stations, "B", 1, 60)
 
-
 # Creating starts for both customers
 
-EventList.push(Event(0, 1, EventList.eventNr, customerType1.begin()))
-EventList.push(Event(1, 1, EventList.eventNr, customerType2.begin()))
+EventList.push((0, 2, EventList.eventNr, customerType1.begin))
+EventList.push((1, 2, EventList.eventNr, customerType2.begin))
 
 EventList.start()

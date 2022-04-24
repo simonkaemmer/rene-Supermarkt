@@ -6,6 +6,7 @@ class Station:
         self.name = name
         self.dueTime = dueTime
         self.queue = []
+        self.customerLog = {}
 
     def enqueue(self, customer):
         self.queue.append(customer)
