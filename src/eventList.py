@@ -22,6 +22,15 @@ class EventList:
             args = event.get()[4]
             fun(args)
 
+
 class Event:
 
-    def __init__(self, ):
+    def __init__(self, time, prio, number, func, args=None):
+        self.time = time
+        self.prio = prio
+        self.number = number
+        self.func = func
+        self.args = args
+
+    def get(self):
+        return [self.time, self.prio, self.number, self.func, self.args]

@@ -1,8 +1,9 @@
 from eventList import EventList
-from event import Event
+from eventList import Event
+from station import Station
+
 
 class KundIn:
-
     __startTime = 0
     __noWaitFlag = True
     __totalTime = 0
@@ -10,18 +11,17 @@ class KundIn:
     __totalCompleteTime = 0
     file = open("supermarkt_customer.txt", "w")
 
-    def __init__(self, cType, stations, number, whenNext):
+    def __init__(self, stations, cType, number, whenNext):
         self.cType = cType
         self.stations = list(stations)
         self.nummer = number
         self.whenNext = whenNext
 
-
     def begin(self):
 
         self.__startTime = EventList.simTime
         current_time = EventList.simTime + self.stations[0][1]
-        EventList.push(Event(current_time, 1, EventList.eventNr+1, self.arival()))
+        EventList.push(Event(current_time, 1, EventList.eventNr + 1, self.arival()))
 
         # Hier muss noch ein neuer Kunde angelegt werden
 
@@ -45,8 +45,7 @@ class KundIn:
             station.enqueue(self)
             current_time = EventList.simTime + station.dueTime * count
 
-            EventList.push(Event(current_time, 1, EventList.eventNr+1, self.leave()))
-
+            EventList.push(Event(current_time, 1, EventList.eventNr + 1, self.leave()))
 
     def leave(self):
         currentStation = self.stations.pop(0)[0]
@@ -67,5 +66,3 @@ class KundIn:
             currentTime = EventList.simTime + currentStation.dueTime * count
 
             EventList.push(Event(currentTime, 0, EventList.eventNr, next_customer.leave()))
-
-
