@@ -21,3 +21,7 @@ class EventList:
             fun = event.get()[3]
             args = event.get()[4]
             fun(args)
+
+class Event:
+
+    def __init__(self, ):
