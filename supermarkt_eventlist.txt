@@ -1,0 +1,2 @@
+(0, 2, 0, <bound method KundIn.begin of <src.kundIn.KundIn object at 0x00000206FE24D790>>)
+(1, 2, 0, <bound method KundIn.begin of <src.kundIn.KundIn object at 0x00000206FE24D760>>)

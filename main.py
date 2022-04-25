@@ -7,17 +7,17 @@ if __name__ == "__main__":
     # Create Stations
 
     baecker = Station(10, "Bäcker")
-    wurst = Station(30, "Wursttheke")
-    kaese = Station(60, "Käsetheke")
+    wursttheke = Station(30, "Wursttheke")
+    kaesetheke = Station(60, "Käsetheke")
     kasse = Station(5, "Kasse")
 
     # Create Customer Types
 
     type1stations = [(baecker, 10, 10, 10),
-                     (wurst, 30, 10, 5),
-                     (kaese, 45, 5, 3),
+                     (wursttheke, 30, 10, 5),
+                     (kaesetheke, 45, 5, 3),
                      (kasse, 60, 20, 30)]
-    type2stations = [(wurst, 30, 5, 2),
+    type2stations = [(wursttheke, 30, 5, 2),
                      (kasse, 30, 20, 3),
                      (baecker, 20, 20, 3)]
 

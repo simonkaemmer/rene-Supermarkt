@@ -24,20 +24,24 @@ class EventList:
     eventNr = 0
     simTime = 0
     heapQ = []
+    file = open("supermarkt_eventlist.txt", "w")
 
     @classmethod
     def pop(cls):
-        return heapq.heappop(cls.heapQ)
+        val = heapq.heappop(cls.heapQ)
+        return val
 
     @classmethod
     def push(cls, event):
         heapq.heappush(cls.heapQ, event)
+        print("Push:" + str(id(cls.heapQ)) + str(cls.heapQ))
 
     @classmethod
     def start(cls):
         while len(cls.heapQ) != 0:
-            print("Started iteration with HeapList-Len: " + str(len(cls.heapQ)))
+            print("Star:" + str(id(cls.heapQ)) + str(cls.heapQ))
+            print(len(cls.heapQ))
             event = cls.pop()
-            print("Event: " + str(event[0]) + " : " + str(event[1]) + " : " + str(event[2]) + " : " + str(event[3]))
+            EventList.file.write(str(event) + "\n")
             cls.simTime = event[0]
             event[3]()
