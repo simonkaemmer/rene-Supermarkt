@@ -47,7 +47,7 @@ class KundIn:
             KundIn.file.write(str(EventList.sim_time) + ": " + self.customer_type + str(self.customer_number)
                               + " too long queue @" + station.name + "\n")
             self.wait_flag = False
-            station.customerLog[self.customer_type + str(self.customer_number)] = "too long queue"
+            station.customerLog[self.customer_type + str(self.customer_number)] = "tlq"
             self.stations.pop(0)
             if len(self.stations) == 0:
                 KundIn.customer_time += EventList.sim_time - self.start_time
@@ -102,9 +102,11 @@ class KundIn:
             Station.file.write(str(EventList.sim_time) + ": " + station.name + " serving " + self.customer_type
                                + str(self.customer_number) + "\n")
 
-            station.customerLog[station.queue[0].customer_type + str(station.queue[0].customer_number)] = "served"
+            temp_customer = station.queue[0]
 
-            temp_count = station.queue[0][3]
+            station.customerLog[temp_customer.customer_type + str(temp_customer.customer_number)] = "served"
+
+            temp_count = temp_customer.stations[0][3]
             time_stamp = EventList.sim_time + station.dueTime * temp_count
             EventList.incr()
             EventList.push((time_stamp, 1, EventList.event_nr, station.queue[0].leave))

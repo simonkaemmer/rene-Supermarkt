@@ -7,8 +7,8 @@ def get_skips(station):
     skip = 0
 
     for key, value in station.customerLog.items():
-        if value == "too long queue":
-            skip = skip + 1
+        if value == "tlq": # too long que :P
+            skip += 1
         return str(skip / len(station.customerLog) * 100)
 
 

@@ -48,5 +48,5 @@ class EventList:
             # print("Star:" + str(id(cls.heapQ)) + str(cls.heapQ))
             #             # print(len(cls.heapQ))
             event = cls.pop()
-            cls.simu_zeit = event[0]
+            cls.sim_time = event[0]
             event[3]()
