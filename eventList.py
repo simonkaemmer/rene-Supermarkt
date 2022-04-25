@@ -19,29 +19,34 @@ import heapq
 #     def getFuncArgs(self):
 #         return self.args
 
-
 class EventList:
-    eventNr = 0
-    simTime = 0
-    heapQ = []
+
+    list = []  # Ordered queue with sort algo from heapq
+    sim_time = 0  # Simulation Start Time
+    event_nr = 0  # Number of current event
     file = open("supermarkt_eventlist.txt", "w")
 
     @classmethod
     def pop(cls):
-        val = heapq.heappop(cls.heapQ)
-        return val
+        return heapq.heappop(cls.list)
 
     @classmethod
     def push(cls, event):
-        heapq.heappush(cls.heapQ, event)
-        print("Push:" + str(id(cls.heapQ)) + str(cls.heapQ))
+        heapq.heappush(cls.list, event)
+        print("Push:" + str(id(cls.list)) + str(cls.list))
+        cls.file.write(str(event) + "\n")
+
+
+    @classmethod
+    def incr(cls):
+        cls.event_nr += 1
 
     @classmethod
     def start(cls):
-        while len(cls.heapQ) != 0:
-            print("Star:" + str(id(cls.heapQ)) + str(cls.heapQ))
-            print(len(cls.heapQ))
+        while len(cls.list) != 0:
+            print("While: " + str(id(cls.list)))
+            # print("Star:" + str(id(cls.heapQ)) + str(cls.heapQ))
+            #             # print(len(cls.heapQ))
             event = cls.pop()
-            EventList.file.write(str(event) + "\n")
-            cls.simTime = event[0]
+            cls.simu_zeit = event[0]
             event[3]()

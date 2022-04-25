@@ -1,6 +1,6 @@
-from src.station import Station
-from src.kundIn import KundIn
-from src.eventList import EventList
+from station import Station
+from kundIn import KundIn
+from eventList import EventList
 
 
 if __name__ == "__main__":
@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
     # Creating starts for both customers
 
-    EventList.push((0, 2, EventList.eventNr, customerType1.begin))
-    EventList.push((1, 2, EventList.eventNr, customerType2.begin))
+    EventList.push((0, 2, EventList.event_nr, customerType1.begin))
+    EventList.push((1, 2, EventList.event_nr, customerType2.begin))
 
     EventList.start()
