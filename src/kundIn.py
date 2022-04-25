@@ -1,118 +1,93 @@
-from eventList import EventList
-from station import Station
+import time
+from global_time import start_time
+from threading import Thread, Event, Lock
 
 
-class KundIn:
-    totalTime = 0
-    totalCompleteTime = 0
-    totalCount = 0
-    completeCount = 0
 
-    file = open("supermarkt_customer.txt", "w")
+class KundIn(Thread):
+    countAll = 0
+    completeAll = 0
+    timeAll = 0
+    timeCompleteAll = 0
+    print_lock = Lock()
+    cus_file = open("supermarkt_customer.txt", "w")
 
-    def __init__(self, stations, cType, number, whenNext):
-        KundIn.totalCount += 1
-        self.cType = cType
-        self.stations = list(stations)
-        self.number = number
-        self.whenNext = whenNext
-        self.noWaitFlag = True
-        self.startTime = 0
+    def __init__(self, liste, typ, nummer, abstand):
+        Thread.__init__(self)
+        self.liste = list(liste)
+        self.typ = typ
+        self.nummer = nummer
+        self.time_till_next = abstand
+        self.complete = True
+        self.startTime = time.time()
+        KundIn.countAll += 1
+        self.servEv = Event()
 
-    def begin(self):
+    def run(self):
+        self.begin_shopping()
 
-        print("Begin")
+    def begin_shopping(self):
+        time.sleep(self.liste[0][1])
+        self.arrival_station()
 
-        self.startTime = EventList.simTime
-        current_time = EventList.simTime + self.stations[0][1]
+    def arrival_station(self):
 
-        EventList.eventNr += 1
-        EventList.push((current_time, 3, EventList.eventNr, self.arival))
+        station, zeit_bis_ankunft, limit, anzahl = self.liste[0]
+        station.lock.acquire()
 
-        # print("new event pushed")
-        time_newCust = EventList.simTime + self.whenNext  # Wirklicher Zeitpunkt, keine Spanne
+        if len(station.queue) > limit:
+            station.lock.release()
+            KundIn.print_lock.acquire()
+            KundIn.cus_file.write(str(int(round(time.time() - start_time))) + ": " +
+                                  self.typ + str(self.nummer) + " Dropped at " + station.name + "\n")
+            KundIn.print_lock.release()
 
-        if time_newCust <= 1800:
-            new_customer = KundIn(self.stations, self.cType, self.number + 1, self.whenNext)
-            # print("Neuer Kunde angelegt")
-            EventList.eventNr += 1
-            EventList.push((time_newCust, 2, EventList.eventNr, new_customer.begin))
+            self.complete = False
+            station.costumerDict[self.typ + str(self.nummer)] = "dropped"
 
-    def arival(self):
+            self.liste.pop(0)
+            time.sleep(zeit_bis_ankunft)
+            self.arrival_station()
 
-        print("Arival")
-
-        station, curTime, maxWait, count = self.stations[0]
-
-        if len(station.queue) > maxWait:
-            KundIn.file.write(
-                str(EventList.simTime) + ": " + self.cType + str(self.number) + " q to long @ " + station.name + "\n")
-            print(str(EventList.simTime) + ": " + self.cType + str(self.number) + " q to long @ " + station.name + "\n")
-            self.noWaitFlag = False
-            station.customerLog[self.cType + str(self.number)] = "Queue too long!"
-            self.stations.pop(0)
-
-            if len(self.stations) == 0:
-                KundIn.totalTime += EventList.simTime - self.startTime
-                if self.noWaitFlag:
-                    KundIn.completeCount += 1
-                    KundIn.totalCompleteTime += EventList.simTime - self.startTime
-            else:
-                current_time = EventList.simTime + self.stations[0][1]
-
-                EventList.eventNr += 1
-                EventList.push((current_time, 1, EventList.eventNr, self.arival))
         elif len(station.queue) == 0:
-            KundIn.file.write(str(EventList.simTime) + ": " + self.cType + str(
-                self.number) + " getting served @ " + station.name + "\n")
-            print(str(EventList.simTime) + ": " + self.cType + str(
-                self.number) + " getting served @ " + station.name + "\n")
-            station.enqueue(self)
-            Station.file.write(str(EventList.simTime) + ": " + station.name + " serving customer " + self.typ + str(
-                self.number) + "\n")
-            print(str(EventList.simTime) + ": " + station.name + " serving customer " + self.typ + str(
-                self.number) + "\n")
-            station.customerLog[self.cType + str(self.number)] = "served"
-            current_time = EventList.simTime + station.dueTime * count
+            station.lock.release()
+            KundIn.print_lock.acquire()
+            KundIn.cus_file.write(str(int(round(time.time() - start_time))) + ": " + self.typ +
+                                  str(self.nummer) + " Serving at " + station.name + "\n")
+            KundIn.print_lock.release()
 
-            EventList.eventNr += 1
-            EventList.push((current_time, 1, EventList.eventNr, self.leave))
+            station.lineup(self)
+            self.servEv.wait()
+            self.servEv.clear()
+            self.leave_station()
 
         else:
-            KundIn.file.write(
-                str(EventList.simTime) + ": " + self.cType + str(self.number) + " waiting @ " + station.name + "\n")
-            print(str(EventList.simTime) + ": " + self.cType + str(self.number) + " waiting @ " + station.name + "\n")
-            station.enqueue(self)
+            station.lock.release()
+            KundIn.print_lock.acquire()
+            KundIn.cus_file.write(str(int(round(time.time() - start_time))) + ": " + self.typ +
+                                  str(self.nummer) + " Queueing at " + station.name + "\n")
+            KundIn.print_lock.release()
 
-    def leave(self):
-        print("leave")
-        currentStation = self.stations.pop(0)[0]
-        currentStation.finished(self)
+            station.lineup(self)
+            self.servEv.wait()
+            self.servEv.clear()
+            self.leave_station()
 
-        KundIn.file.write(
-            str(EventList.simTime) + ": " + self.cType + str(self.number) + " leaving @ " + currentStation.name + "\n")
-        print(
-            str(EventList.simTime) + ": " + self.cType + str(self.number) + " leaving @ " + currentStation.name + "\n")
+    def leave_station(self):
 
-        if len(self.stations) == 0:
-            KundIn.totalTime += EventList.simTime - self.startTime
-            if self.noWaitFlag:
-                KundIn.completeCount += 1
-                KundIn.totalCompleteTime += EventList.simTime - self.startTime
+        station = self.liste.pop(0)[0]
+
+        KundIn.print_lock.acquire()
+        KundIn.cus_file.write(str(int(round(time.time() - start_time))) + ": " + self.typ +
+                              str(self.nummer) + " Finished at " + station.name + "\n")
+        KundIn.print_lock.release()
+
+        # auf weitere Station prüfen
+        if len(self.liste) == 0:
+            KundIn.timeAll += time.time() - self.startTime
+            if self.complete:
+                KundIn.completeAll += 1
+                KundIn.timeCompleteAll += time.time() - self.startTime
         else:
-            current_time = EventList.simTime + self.stations[0][1]
-
-            EventList.eventNr += 1
-            EventList.push((current_time, 1, EventList.eventNr, self.arival))
-
-        if len(currentStation.queue) > 0:
-            next_customer = currentStation.queue[0]
-
-            Station.file.write(
-                str(EventList.simTime) + ": " + currentStation.name + " serving customer" + self.cType + str(
-                    self.number) + "\n")
-            count = next_customer.stations[0][3]
-            currentTime = EventList.simTime + currentStation.dueTime * count
-
-            EventList.eventNr += 1
-            EventList.push((currentTime, 0, EventList.eventNr, next_customer.leave))
+            time.sleep(self.liste[0][1])
+            self.arrival_station()
