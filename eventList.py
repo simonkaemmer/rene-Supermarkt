@@ -33,7 +33,7 @@ class EventList:
     @classmethod
     def push(cls, event):
         heapq.heappush(cls.list, event)
-        print("Push:" + str(id(cls.list)) + str(cls.list))
+        #  print("Push:" + str(id(cls.list)) + str(cls.list))
         cls.file.write(str(event) + "\n")
 
 

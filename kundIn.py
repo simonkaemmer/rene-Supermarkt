@@ -24,22 +24,24 @@ class KundIn:
         time_stamp = EventList.sim_time + self.stations[0][1]
         EventList.incr()
         EventList.push((time_stamp, 3, EventList.event_nr, self.arival))
-
+        # print("SimTime: " + str(EventList.sim_time))
         new_customer_starttime = EventList.sim_time + self.customer_when_next
 
         if new_customer_starttime <= 1800:  # 3600 seconds per hour --> 1800 per half an hour
             new_customer = KundIn(self.stations, self.customer_type, self.customer_number + 1, self.customer_when_next)
             EventList.incr()  # Calling an increment in front of every push on event_nr is not that good, I know but easier for me to solve here
             EventList.push((new_customer_starttime, 2, EventList.event_nr, new_customer.begin))
+            # print("---------" + str(id(EventList.list)))
 
     def arival(self):
 
         print("arival")
-        station, due_time, max_waiting_len, count = self.stations[0]
 
-        # station = self.stations[0][0]
-        # max_waiting_len = self.stations[0][2]
-        # count = self.stations[0][3]
+        station = self.stations[0][0]
+        max_waiting_len = self.stations[0][2]
+        count = self.stations[0][3]
+
+        print("Time on arival: " + str(EventList.sim_time))
 
         if len(station.queue) > max_waiting_len:
             KundIn.file.write(str(EventList.sim_time) + ": " + self.customer_type + str(self.customer_number)

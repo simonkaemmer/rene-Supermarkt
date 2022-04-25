@@ -3,6 +3,15 @@ from kundIn import KundIn
 from eventList import EventList
 
 
+def get_skips(station):
+    skip = 0
+
+    for key, value in station.customerLog.items():
+        if value == "too long queue":
+            skip = skip + 1
+        return str(skip / len(station.customerLog) * 100)
+
+
 if __name__ == "__main__":
     # Create Stations
 
@@ -30,3 +39,12 @@ if __name__ == "__main__":
     EventList.push((1, 2, EventList.event_nr, customerType2.begin))
 
     EventList.start()
+
+    file = open("Results.txt", "w")
+    file.write("Simulation stopped @ : " + str(EventList.sim_time) + "\n"
+               + "width " + str(KundIn.customer_counter) + " served" + "\n")
+    file.write("Skips: " + "\n")
+    file.write("--- Bäcker-Queue: " + get_skips(baecker) + " times skipped" + "\n"
+               + "--- Metzer-Queue: " + get_skips(wursttheke) + " times skipped" + "\n"
+               + "--- Käsetheke: " + get_skips(kaesetheke) + " times skipped" + "\n"
+               + "--- Kasse: " + get_skips(kasse) + " times skipped" + "\n")
