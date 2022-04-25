@@ -24,17 +24,18 @@ class KundIn:
         current_time = EventList.simTime + self.stations[0][1]
 
         EventList.eventNr += 1
-        EventList.push((current_time, 1, EventList.eventNr, self.arival))
-
+        EventList.push((current_time, 3, EventList.eventNr, self.arival))
+        print("new event pushed")
         time_newCust = EventList.simTime + self.whenNext  # Wirklicher Zeitpunkt, keine Spanne
 
         if time_newCust <= 1800:
             new_customer = KundIn(self.stations, self.cType, self.number + 1, self.whenNext)
-
             EventList.eventNr += 1
-            EventList.push((time_newCust, 1, EventList.eventNr, new_customer.begin))
+            EventList.push((time_newCust, 2, EventList.eventNr, new_customer.begin))
 
     def arival(self):
+
+        print("Arival")
 
         station, curTime, maxWait, count = self.stations[0]
 

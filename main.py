@@ -2,29 +2,31 @@ from src.station import Station
 from src.kundIn import KundIn
 from src.eventList import EventList
 
-# Create Stations
 
-baecker = Station(10, "Bäcker")
-wurst = Station(30, "Wursttheke")
-kaese = Station(60, "Käsetheke")
-kasse = Station(5, "Kasse")
+if __name__ == "__main__":
+    # Create Stations
 
-# Create Customer Types
+    baecker = Station(10, "Bäcker")
+    wurst = Station(30, "Wursttheke")
+    kaese = Station(60, "Käsetheke")
+    kasse = Station(5, "Kasse")
 
-type1stations = [(baecker, 10, 10, 10),
-                 (wurst, 30, 10, 5),
-                 (kaese, 45, 5, 3),
-                 (kasse, 60, 20, 30)]
-type2stations = [(wurst, 30, 5, 2),
-                 (kasse, 30, 20, 3),
-                 (baecker, 20, 20, 3)]
+    # Create Customer Types
 
-customerType1 = KundIn(type1stations, "A", 1, 200)
-customerType2 = KundIn(type2stations, "B", 1, 60)
+    type1stations = [(baecker, 10, 10, 10),
+                     (wurst, 30, 10, 5),
+                     (kaese, 45, 5, 3),
+                     (kasse, 60, 20, 30)]
+    type2stations = [(wurst, 30, 5, 2),
+                     (kasse, 30, 20, 3),
+                     (baecker, 20, 20, 3)]
 
-# Creating starts for both customers
+    customerType1 = KundIn(type1stations, "A", 1, 200)
+    customerType2 = KundIn(type2stations, "B", 1, 60)
 
-EventList.push((0, 2, EventList.eventNr, customerType1.begin))
-EventList.push((1, 2, EventList.eventNr, customerType2.begin))
+    # Creating starts for both customers
 
-EventList.start()
+    EventList.push((0, 2, EventList.eventNr, customerType1.begin))
+    EventList.push((1, 2, EventList.eventNr, customerType2.begin))
+
+    EventList.start()

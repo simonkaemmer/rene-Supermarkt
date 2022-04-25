@@ -23,21 +23,20 @@ import heapq
 class EventList:
     eventNr = 0
     simTime = 0
-    __heapQ = []
+    heapQ = []
 
     @classmethod
     def pop(cls):
-        return heapq.heappop(cls.__heapQ)
+        return heapq.heappop(cls.heapQ)
 
     @classmethod
     def push(cls, event):
-        heapq.heappush(cls.__heapQ, event)
-        cls.eventNr += 1
+        heapq.heappush(cls.heapQ, event)
 
     @classmethod
     def start(cls):
-        while len(cls.__heapQ) != 0:
-            print("Started iteration with HeapList-Len: " + str(len(cls.__heapQ)))
+        while len(cls.heapQ) != 0:
+            print("Started iteration with HeapList-Len: " + str(len(cls.heapQ)))
             event = cls.pop()
             print("Event: " + str(event[0]) + " : " + str(event[1]) + " : " + str(event[2]) + " : " + str(event[3]))
             cls.simTime = event[0]
